@@ -5,8 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "productos")
 public class Producto {
-
-
     //id porque es la clave primaria
     @Id
     // gracias a esto, Java va a obtener el valor del ID
@@ -31,6 +29,11 @@ public class Producto {
 
     private Boolean estado;
 
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", insertable = false, updatable = false)
+    private Categoria categoria;
+
+    // getters and setters
 
     public Integer getIdProducto() {
         return idProducto;
@@ -86,5 +89,13 @@ public class Producto {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }
