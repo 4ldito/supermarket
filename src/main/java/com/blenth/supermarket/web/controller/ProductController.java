@@ -2,28 +2,39 @@ package com.blenth.supermarket.web.controller;
 
 import com.blenth.supermarket.domain.Product;
 import com.blenth.supermarket.domain.service.ProductService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 // esto le indica a Spring que esta clase va a ser el controlador de una API Rest
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class    ProductController {
     @Autowired
     private ProductService productService;
 
     @GetMapping("/all")
+    @ApiOperation("Get all supermarket products")
+    @ApiResponse(code = 200, message = "OK")
     public ResponseEntity<List<Product>> getAll() {
         return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/id={id}")
-    public ResponseEntity<Product> getProduct(@PathVariable("id") int productId) {
+    @ApiOperation("Search a product by ID")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Product Not Found")
+    })
+    public ResponseEntity<Product> getProduct(@ApiParam(value = "The value of the product",
+            required = true, example = "7") @PathVariable("id") int productId) {
         // Este código, es equivalente a:
         return ResponseEntity.of(productService.getProduct(productId));
         // este:
